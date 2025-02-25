@@ -2,9 +2,8 @@ import sys
 import gi
 import threading
 import json
-from pathlib import Path
-import time
 import os
+from pathlib import Path
 
 gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
@@ -12,6 +11,9 @@ from gi.repository import Gtk, Gio, Adw, GdkPixbuf, GLib, Gdk
 import buttons as buttons
 import reddit as jp
 from settings import *
+
+from tools import *
+
 
 apppath = str(Path(__file__).parent.parent / "ui" / "main.ui") 
 
@@ -43,7 +45,7 @@ class femboydownloaderApplication(Adw.Application):
         # Obtain and show the main window
         self.win = builder.get_object("main")
         self.win.set_application(self)  # Application will close once it no longer has active windows attached to it
-        self.win.set_title("femboy Downloader")
+        self.win.set_title("wallpaper Downloader")
         
         
         # set button up references
@@ -91,7 +93,7 @@ class femboydownloaderApplication(Adw.Application):
 
     def on_settings_action(self,widget):
         """Callback for the app.preferences action."""
-        print("aaaaa")
+        log("aaaaa")
         window = settingswindow(self.window)
         window.set_transient_for(self.window)
         window.set_modal(True)
@@ -119,7 +121,7 @@ class femboydownloaderApplication(Adw.Application):
         def on_response(dialog, response):
             if response == Gtk.ResponseType.ACCEPT:
                 save_path = dialog.get_file().get_path()
-                print(f"File will be saved to: {save_path}")
+                log(f"File will be saved to: {save_path}")
                 buttons.download(save_path)  
 
             dialog.destroy()
@@ -161,10 +163,9 @@ class femboydownloaderApplication(Adw.Application):
         self.spinner.set_visible(False)
         self.image.set_visible(True)
         if a != True:
-            error = json.loads(a[1].decode('utf-8')).get("errors")[0]
-            # ^ this is unreadable but it gets the error out of strings like b'{"errors":["Not found"]}'
-            print(f"HTTP status code: {a[0]}, {a[1]}")
-            self.show_error_dialog(self, f"HTTP status code:{a[0]}", f"{error}")
+            error = a[1]["errors"]
+            log_error(f"{a[0]}, {a[1]}")
+            self.show_error_dialog(self, f'{a[0]}', f"{error}")
         
         
     

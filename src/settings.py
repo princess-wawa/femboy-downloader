@@ -3,6 +3,8 @@ from pathlib import Path
 import os
 import json
 
+from tools import *
+
 class UserPreferences:
     def __init__(self):
         self.preferences = {
@@ -19,7 +21,7 @@ class UserPreferences:
             self.preferences = json.loads(f.read())
             f.close()
         except Exception as e:
-            print(e)
+            log_error(e)
 
     def reload_preferences(self):
         try:
@@ -27,7 +29,7 @@ class UserPreferences:
             self.preferences = json.loads(f.read())
             f.close()
         except Exception as e:
-            print(e)
+            log_error(e)
 
     def get_preference(self, key):
         self.reload_preferences()
@@ -42,7 +44,7 @@ class UserPreferences:
             f.write(json.dumps(self.preferences))
             f.close()
         except Exception as e:
-            print(e)
+            log_error(e)
 
 preferencepath = str(Path(__file__).parent.parent / "ui" / "preferences.ui")
 
@@ -59,7 +61,7 @@ class settingswindow(Adw.PreferencesWindow):
         
         self.nsfw_switch = builder.get_object("nsfw") 
 
-        print(self.settings.get_preference("nsfw"))
+        log(self.settings.get_preference("nsfw"))
         self.nsfw_switch.set_state(self.settings.get_preference("nsfw"))
         self.nsfw_switch.connect('notify::active', self.toggle_nsfw)
 

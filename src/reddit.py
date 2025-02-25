@@ -5,6 +5,8 @@ from pathlib import Path
 from PIL import Image
 import json
 
+from tools import *
+
 def save_response():
     """Saves the given response dictionary to a JSON file."""
     global response
@@ -19,12 +21,12 @@ try:
         with open(filepath, "r", encoding="utf-8") as file:
             response=json.load(file)
 except:
-    print("file is empty or inexistent")
+    log_error("file is empty or inexistent")
 
 if "response" not in globals():
     response = {"Author":"","Source":""}
     save_response()
-print(response)
+log(response)
 
 
 def downloadimage(url):
@@ -39,9 +41,9 @@ def downloadimage(url):
         image = image.convert("RGB")  # converts image to PNG
         
         image.save(filepath, "JPEG", optimize=True)
-        print(f"Image downloaded, converted to JPEG, and saved as {filepath}")
+        log(f"Image downloaded, converted to JPEG, and saved as {filepath}")
     else:
-        print("Failed to download image. HTTP Status code:", response.status_code)
+        log_error("Failed to download image. HTTP Status code:", response.status_code)
   
 
 def reloadimage():
@@ -57,38 +59,43 @@ def reloadimage():
 
     url = f"https://www.reddit.com/r/{subreddit}/hot.json?limit=50"
 
-    print(f'fetching {url}')
+    log(f'fetching {url}')
 
     headers = {"User-Agent": "Mozilla/5.0"}
     try:
         res = requests.get(url, headers=headers)
         res.raise_for_status()
-        data = res.json()
+        try:
+            data = res.json()
+        except json.JSONDecodeError as e:
+            return "Error while decoding JSON", {"errors": f"Error fetching data: {str(e)}"}
 
         posts = [post["data"] for post in data["data"]["children"] if "url" in post["data"]]
         image_posts = [p for p in posts if p["url"].endswith(("jpg", "png", "jpeg"))]
 
         if not image_posts:
-            return({"errors":"No images found in the subreddit."})
+            return "error while chosing image", {"errors":"No images found in the subreddit."}
 
         chosen_post = random.choice(image_posts)
         image_url = chosen_post["url"]
         author = chosen_post["author"]
         source = f"https://www.reddit.com{chosen_post['permalink']}"
 
-        print(f"downloading image from {image_url}")
+        log(f"downloading image from {image_url}")
         downloadimage(image_url)
 
         response["Author"] = author
         response["Source"] = source
         save_response()
 
-        print(f"Image saved successfully!")
+        log(f"Image saved successfully!")
+        
         return True
-
-
+    
     except requests.exceptions.RequestException as e:
-        print(f"Error fetching data: {e}")
+        return "HTTP error", {"errors": f"Request error: {str(e)}"}
+    except Exception as e:
+        return "HTTP error", {"errors": f"Unexpected error: {str(e)}"}
 
 def getresponce():
     """returns the global response varible"""
