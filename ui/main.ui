@@ -1,0 +1,87 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Created with Cambalache 0.90.4 -->
+<interface>
+  <!-- interface-name main.ui -->
+  <requires lib="gio" version="2.0"/>
+  <requires lib="gtk" version="4.8"/>
+  <requires lib="libadwaita" version="1.0"/>
+  <object class="AdwApplicationWindow" id="main">
+    <property name="default-height">600</property>
+    <property name="default-width">800</property>
+    <child>
+      <object class="GtkBox">
+        <property name="orientation">vertical</property>
+        <child>
+          <object class="AdwHeaderBar" id="titlebar">
+            <child type="end">
+              <object class="GtkButton" id="settings">
+                <property name="icon-name">emblem-system-symbolic</property>
+                <property name="tooltip-text">settings</property>
+              </object>
+            </child>
+            <child type="end">
+              <object class="GtkMenuButton" id="infos">
+                <property name="icon-name">help-about</property>
+                <property name="menu-model">infos_menu</property>
+                <property name="tooltip-text">informations</property>
+              </object>
+            </child>
+            <child type="end">
+              <object class="GtkButton" id="download">
+                <property name="icon-name">folder-download-symbolic</property>
+                <property name="tooltip-text">download</property>
+              </object>
+            </child>
+            <child type="end">
+              <object class="GtkButton" id="wallpaper">
+                <property name="icon-name">emblem-photos-symbolic</property>
+                <property name="tooltip-text">set as wallpaper</property>
+              </object>
+            </child>
+            <child type="start">
+              <object class="GtkButton" id="refresh">
+                <property name="icon-name">view-refresh-symbolic</property>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="homogeneous">True</property>
+            <property name="orientation">vertical</property>
+            <child>
+              <object class="GtkImage" id="image">
+                <property name="vexpand">True</property>
+                <property name="vexpand-set">True</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkSpinner" id="spinner">
+                <property name="height-request">100</property>
+                <property name="hexpand">True</property>
+                <property name="hexpand-set">True</property>
+                <property name="name">spinner</property>
+                <property name="spinning">True</property>
+                <property name="valign">center</property>
+                <property name="vexpand">True</property>
+                <property name="vexpand-set">True</property>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+  <menu id="infos_menu">
+    <section id="about-menu">
+      <item>
+        <attribute name="action">app.show-art-about</attribute>
+        <attribute name="label" translatable="yes">About Art</attribute>
+      </item>
+      <item>
+        <attribute name="action">app.about</attribute>
+        <attribute name="label">About app</attribute>
+      </item>
+    </section>
+  </menu>
+</interface>
