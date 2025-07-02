@@ -34,37 +34,43 @@ class UserPreferences:
     def get_preference(self, key):
         self.reload_preferences()
         if key in self.preferences:
-            return self.preCatgirlDownloader/data/ui/preferences.uiferences[key]
+            return self.preferences[key]
         else:
             return None
+
     def set_preference(self, key, value):
         self.preferences[key] = value
         try:
             f = open(self.file, "w+")
             f.write(json.dumps(self.preferences))
             f.close()
+            log(f"set preference {key} to {value}")
         except Exception as e:
             log_error(e)
 
 preferencepath = str(Path(__file__).parent.parent / "ui" / "preferences.ui")
 
-class settingswindow(Adw.PreferencesWindow):
-    __gtype_name__ = 'PreferencesWindow'
-
-    def __init__(self, window, **kwargs):
+class settingswindow:
+    def __init__(self, parent_window):
         builder = Gtk.Builder()
         builder.add_from_file(preferencepath)
-        super().__init__(**kwargs)
-        self.win = window
+
+        self.window = builder.get_object("PreferencesWindow")
         self.settings = UserPreferences()
+        self.parent = parent_window
 
-        
-        self.nsfw_switch = builder.get_object("nsfw") 
-
-        log(self.settings.get_preference("nsfw"))
-        self.nsfw_switch.set_state(self.settings.get_preference("nsfw"))
+        # Setup switch
+        self.nsfw_switch = builder.get_object("nsfw")
+        print(self.settings.get_preference("nsfw"))
+        self.nsfw_switch.set_state(bool(self.settings.get_preference("nsfw")))
         self.nsfw_switch.connect('notify::active', self.toggle_nsfw)
 
-    def toggle_nsfw(self, switch, _active):
-        pref = self.nsfw_switch.get_active()
-        self.settings.set_preference("nsfw", pref)
+        self.window.set_transient_for(parent_window)
+        self.window.set_modal(True)
+
+    def toggle_nsfw(self, switch, _):
+        self.settings.set_preference("nsfw", switch.get_active())
+
+    def present(self):
+        self.window.present()
+

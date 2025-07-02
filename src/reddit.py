@@ -44,7 +44,17 @@ def downloadimage(url):
         log(f"Image downloaded, converted to JPEG, and saved as {filepath}")
     else:
         log_error("Failed to download image. HTTP Status code:", response.status_code)
-  
+
+def get_nsfw_preferences():
+    file = str(Path(__file__).parent.parent / "settings" / "settings.json")
+    try:
+        f = open(file, 'r')
+        preferences = json.loads(f.read())
+        f.close()
+    except Exception as e:
+        log_error(e)
+    
+    return preferences["nsfw"]
 
 def reloadimage():
     """Fetches a random image from a subreddit and saves it as response.jpg"""
@@ -54,9 +64,11 @@ def reloadimage():
                   "GothFemboy", "FemboyStyle", "StraightFemboys", "FemboyNation",
                   "MildFemboys"]
     nsfw_subreddits = ["femboys","FemboyHentai","Femboy4real", "femboycum"] 
+    if get_nsfw_preferences() == True:
+        subreddits += nsfw_subreddits
+        
     subreddit = random.choice(subreddits)
-    subreddit = "wallpapers"
-
+    
     url = f"https://www.reddit.com/r/{subreddit}/hot.json?limit=50"
 
     log(f'fetching {url}')

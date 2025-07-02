@@ -10,8 +10,7 @@ gi.require_version('Adw', '1')
 from gi.repository import Gtk, Gio, Adw, GdkPixbuf, GLib, Gdk
 import buttons as buttons
 import reddit as jp
-from settings import *
-
+from settings import settingswindow 
 from tools import *
 
 
@@ -91,13 +90,17 @@ class femboydownloaderApplication(Adw.Application):
                                     artists=[f"u/{response['Author']}"])
         about.present()
 
-    def on_settings_action(self,widget):
+    def on_settings_action(self, widget):
         """Callback for the app.preferences action."""
-        log("aaaaa")
-        window = settingswindow(self.window)
-        window.set_transient_for(self.window)
-        window.set_modal(True)
-        window.present()
+        log("Opening preferences window.")
+
+        active_window = self.get_active_window()
+        if not active_window:
+            log_error("No active window found.")
+            return
+
+        prefs = settingswindow(active_window)
+        prefs.present()
 
         
 
