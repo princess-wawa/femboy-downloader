@@ -19,17 +19,24 @@ apppath = str(Path(__file__).parent.parent / "ui" / "main.ui")
 class femboydownloaderApplication(Adw.Application):
     """The main application singleton class."""
     
-    __gtype_name__ = 'WallpaperDownloaderWindow'
+    __gtype_name__ = 'FemboyDownloaderWindow'
     settings = Gtk.Template.Child("settings")
     download = Gtk.Template.Child("download")
     wallpaper = Gtk.Template.Child("wallpaper")
     
     def __init__(self):
-        super().__init__(application_id='wawa.femboydownloader',
-                         flags=Gio.ApplicationFlags.FLAGS_NONE)
+        super().__init__(
+            application_id='wawa.femboydownloader',
+            flags=Gio.ApplicationFlags.FLAGS_NONE
+        )
+        
+        # Create actions
         self.create_action('quit', self.quit, ['<primary>q'])
         self.create_action('about', self.on_about_action)
         self.create_action('show-art-about', self.on_art_about_action)
+        self.app_icon = str(Path(__file__).parent.parent / "ui" / "icon.png")
+
+
              
     def do_activate(self):
         """Called when the application is activated.
@@ -44,8 +51,8 @@ class femboydownloaderApplication(Adw.Application):
         # Obtain and show the main window
         self.win = builder.get_object("main")
         self.win.set_application(self)  # Application will close once it no longer has active windows attached to it
-        self.win.set_title("wallpaper Downloader")
-        
+        self.win.set_title("Femboy Downloader")
+
         
         # set button up references
         self.settings = builder.get_object("settings")
@@ -68,14 +75,15 @@ class femboydownloaderApplication(Adw.Application):
         self.image.set_from_file(path)
 
     def on_about_action(self, widget, _):
-        """Callback for the app.about action."""
-        about = Adw.AboutWindow(transient_for=self.props.active_window,
-                                application_name='femboy Downloader',
-                                application_icon='/usr/share/icons/Adwaita/symbolic/emblems/emblem-photos-symbolic.svg',
-                                developer_name='wawa',
-                                version='0.0.1',
-                                developers=['Princess_wawa'],
-                                copyright='© 2025 princess_wawa')
+        about = Adw.AboutWindow(
+            transient_for=self.win,
+            application_name='femboy Downloader',
+            application_icon=self.app_icon,
+            developer_name='wawa',
+            version='0.0.1',
+            developers=['Princess_wawa'],
+            copyright='© 2025 princess_wawa'
+        )
         about.present()
 
     def on_art_about_action(self, widget, _):
