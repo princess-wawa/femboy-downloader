@@ -75,7 +75,7 @@ class femboydownloaderApplication(Adw.Application):
                                 developer_name='wawa',
                                 version='0.0.1',
                                 developers=['Princess_wawa'],
-                                copyright='© 2024 princess_wawa')
+                                copyright='© 2025 princess_wawa')
         about.present()
 
     def on_art_about_action(self, widget, _):
