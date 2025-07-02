@@ -61,8 +61,8 @@ class settingswindow:
 
         # Setup switch
         self.nsfw_switch = builder.get_object("nsfw")
-        print(self.settings.get_preference("nsfw"))
-        self.nsfw_switch.set_state(bool(self.settings.get_preference("nsfw")))
+        if self.settings.get_preference("nsfw") == True:
+            self.nsfw_switch.set_active(True)
         self.nsfw_switch.connect('notify::active', self.toggle_nsfw)
 
         self.window.set_transient_for(parent_window)
