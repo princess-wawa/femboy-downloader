@@ -3,11 +3,12 @@ import subprocess
 from pathlib import Path
 import shutil
 import os
+import tempfile
 
 from tools import *
 
 def download(save_path):
-    path = str(Path(__file__).parent.parent / "response" / "response.jpg")
+    path = str(Path(tempfile.gettempdir()) / "femboydownloader" / "response.jpg")
     
     try:
         shutil.copy(str(path), save_path)
@@ -18,7 +19,7 @@ def download(save_path):
     
     
 def wallpaper():
-    imagepath = str(Path(__file__).parent.parent / "response" / "response.jpg")
+    imagepath = str(Path(tempfile.gettempdir()) / "femboydownloader" / "response.jpg")
     scriptpath = str(Path(__file__).parent / "set_wallpaper")
     destinationpath = os.path.join(os.path.expanduser("~"), '.config', 'wallpaper')
     imagedestinationpath = f"{destinationpath}/wallpaper.jpg"
