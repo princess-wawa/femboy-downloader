@@ -4,6 +4,7 @@ import threading
 import json
 import os
 from pathlib import Path
+import tempfile
 
 gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
@@ -71,8 +72,8 @@ class femboydownloaderApplication(Adw.Application):
         self.spinner.set_visible(False)
         
         self.win.present()
-        path = str(Path(__file__).parent.parent / "response" / "response.jpg")
-        self.image.set_from_file(path)
+        path = Path(tempfile.gettempdir()) / "femboydownloader" / "response.jpg"
+        self.image.set_from_file(str(path))
 
     def on_about_action(self, widget, _):
         about = Adw.AboutWindow(
@@ -168,8 +169,8 @@ class femboydownloaderApplication(Adw.Application):
         
     def on_refresh_action(self, widget=""):
         a = jp.reloadimage()
-        path = str(Path(__file__).parent.parent / "response" / "response.jpg")
-        self.image.set_from_file(path)
+        path = Path(tempfile.gettempdir()) / "femboydownloader" / "response.jpg"
+        self.image.set_from_file(str(path))
         self.spinner.stop()
         self.spinner.set_visible(False)
         self.image.set_visible(True)

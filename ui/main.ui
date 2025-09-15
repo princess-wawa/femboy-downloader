@@ -34,8 +34,9 @@
             </child>
             <child type="end">
               <object class="GtkButton" id="wallpaper">
-                <property name="icon-name">emblem-photos-symbolic</property>
-                <property name="tooltip-text">set as wallpaper</property>
+              <property name="icon-name">emblem-photos-symbolic</property>
+              <property name="tooltip-text">set as wallpaper</property>
+              <property name="label">set wallpaper</property>
               </object>
             </child>
             <child type="start">

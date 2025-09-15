@@ -4,18 +4,23 @@ from io import BytesIO
 from pathlib import Path
 from PIL import Image
 import json
+import tempfile
+import os
 
 from tools import *
 
 def save_response():
     """Saves the given response dictionary to a JSON file."""
     global response
-    filepath = Path(__file__).parent.parent / "response" / "response.json"
+    filepath = Path(tempfile.gettempdir()) / "femboydownloader" / "response.json"
+    if not filepath.exists():
+        filepath.parent.mkdir(parents=True, exist_ok=True)
+
     with open(filepath, "w", encoding="utf-8") as file:
         json.dump(response, file, indent=4)
 
 # get the saved informations about the last downloaded image 
-filepath = Path(__file__).parent.parent / "response" / "response.json"
+filepath = Path(tempfile.gettempdir()) / "femboydownloader" / "response.json"
 try:
     if filepath.exists():
         with open(filepath, "r", encoding="utf-8") as file:
@@ -30,8 +35,8 @@ log(response)
 
 
 def downloadimage(url):
-    """downloads the image, converts it to a .png and saves it as response/response.png"""
-    filepath = Path(__file__).parent.parent / "response" / "response.jpg"
+    """downloads the image, converts it to a .png and saves it as /tmp/femboydownloader/response.png"""
+    filepath = Path(tempfile.gettempdir()) / "femboydownloader" / "response.jpg"
     filepath.parent.mkdir(parents=True, exist_ok=True) # make sure the path exists, if not, create it
     
     response = requests.get(url)
@@ -46,7 +51,12 @@ def downloadimage(url):
         log_error("Failed to download image. HTTP Status code:", response.status_code)
 
 def get_nsfw_preferences():
-    file = str(Path(__file__).parent.parent / "settings" / "settings.json")
+    filepath = Path.home() / ".config" / "femboydownloader" / "settings" / "settings.json"
+    if os.path.exists(filepath) == False:
+        log_error("preferences file doesn't exist,  using default preferences")
+        return False
+    
+    file = str(filepath)
     try:
         f = open(file, 'r')
         preferences = json.loads(f.read())

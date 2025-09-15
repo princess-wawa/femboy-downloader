@@ -11,11 +11,14 @@ class UserPreferences:
             "nsfw": False,
         }
         self.directory = GLib.get_user_config_dir()
-        self.file = str(Path(__file__).parent.parent / "settings" / "settings.json")
+        self.filepath = Path.home() / ".config" / "femboydownloader" / "settings" / "settings.json"
+        self.file = str(self.filepath)
         if not os.path.exists(self.file):
+            self.filepath.parent.mkdir(parents=True, exist_ok=True)
             f = open(self.file, "w+")
             f.write(json.dumps(self.preferences))
             f.close()
+            log(f"Created preferences file {self.file}")
         try:
             f = open(self.file, 'r')
             self.preferences = json.loads(f.read())
