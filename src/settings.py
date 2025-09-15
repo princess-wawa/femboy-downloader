@@ -1,4 +1,4 @@
-from gi.repository import GLib, Gtk, Adw
+from gi.repository import GLib, Gtk, Adw # type: ignore
 from pathlib import Path
 import os
 import json

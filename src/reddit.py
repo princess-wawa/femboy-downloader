@@ -1,8 +1,8 @@
-import requests
+import requests # type: ignore
 import random
 from io import BytesIO
 from pathlib import Path
-from PIL import Image
+from PIL import Image  # type: ignore
 import json
 import tempfile
 import os
