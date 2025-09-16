@@ -15,7 +15,7 @@ from settings import settingswindow
 from tools import *
 
 
-apppath = str(Path(__file__).parent.parent / "ui" / "main.ui") 
+apppath = str(Path(__file__).parent.parent / "data" / "main.ui") 
 
 class femboydownloaderApplication(Adw.Application):
     """The main application singleton class."""
@@ -35,7 +35,7 @@ class femboydownloaderApplication(Adw.Application):
         self.create_action('quit', self.quit, ['<primary>q'])
         self.create_action('about', self.on_about_action)
         self.create_action('show-art-about', self.on_art_about_action)
-        self.app_icon = str(Path(__file__).parent.parent / "ui" / "icon.png")
+        self.app_icon = str(Path(__file__).parent.parent / "data" / "icon.png")
 
              
     def do_activate(self):

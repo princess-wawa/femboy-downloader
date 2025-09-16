@@ -51,7 +51,7 @@ class UserPreferences:
         except Exception as e:
             log_error(e)
 
-preferencepath = str(Path(__file__).parent.parent / "ui" / "preferences.ui")
+preferencepath = str(Path(__file__).parent.parent / "data" / "preferences.ui")
 
 class settingswindow:
     def __init__(self, parent_window):

@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=femboy Downloader
+Comment=Very useful application to get random images of femboys
+Exec=femboydownloader
+Icon=femboydownloader/data/icon.png
+Terminal=false
+Type=Application
+Categories=Utility;
+StartupNotify=true
