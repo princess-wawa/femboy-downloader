@@ -5,6 +5,7 @@ an image downloader for the [nyarch linux](github.com/NyarchLinux/NyarchLinux) d
 ## to install just run
 
 ```bash
-1	cd /tmp
-2	wget https://github.com/princess-wawa/femboy-downloader/releases/latest/download/femboy-downloader.flatpak
-3	flatpak install femboy-downloader.flatpak```
+cd /tmp
+wget https://github.com/princess-wawa/femboy-downloader/releases/latest/download/femboy-downloader.flatpak
+flatpak install femboy-downloader.flatpak
+```
