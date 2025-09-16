@@ -1,0 +1,2 @@
+#!/usr/bin/bash
+@PYTHON@ '@moduledir@/src/main.py'

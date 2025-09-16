@@ -27,7 +27,7 @@ class femboydownloaderApplication(Adw.Application):
     
     def __init__(self):
         super().__init__(
-            application_id='wawa.femboydownloader',
+            application_id='moe.wawa.femboydownloader',
             flags=Gio.ApplicationFlags.FLAGS_NONE
         )
         
@@ -36,7 +36,6 @@ class femboydownloaderApplication(Adw.Application):
         self.create_action('about', self.on_about_action)
         self.create_action('show-art-about', self.on_art_about_action)
         self.app_icon = str(Path(__file__).parent.parent / "ui" / "icon.png")
-
 
              
     def do_activate(self):
